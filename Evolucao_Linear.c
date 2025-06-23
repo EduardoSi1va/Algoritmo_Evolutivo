@@ -3,7 +3,7 @@
 #include <time.h>
 #include <math.h>
 
-// Definição de constantes 
+// Definição de constantes
 #define TAM_POPULACAO 10
 #define VALOR_ALVO 500
 #define MIN_VALOR 1

@@ -55,7 +55,7 @@ int encontrou_solucao(int pop[])
 // Compara dois indivíduos para ordenação crescente por fitness
 int comparar(const void *a, const void *b)
 {
-    int f1 = fitness(*(int *)a);
+    int f1 = fitness(*(int *)a); // Faz o casting de void * para int * e, após isso, acessa o valor do elemento
     int f2 = fitness(*(int *)b);
     return f1 - f2;
 }
@@ -96,7 +96,7 @@ int torneio(int candidatos[], int tamanho)
 {
     int a = candidatos[gerar_aleatorio(0, tamanho - 1)];
     int b = candidatos[gerar_aleatorio(0, tamanho - 1)];
-    return (fitness(a) < fitness(b)) ? a : b;
+    return (fitness(a) < fitness(b)) ? a : b; // Retorna o indivíduo com a maior pontuação
 }
 
 // Gera uma nova geração
@@ -122,16 +122,20 @@ void nova_geracao(int pop_atual[], int nova_pop[], int geracao)
     {
         int pai = torneio(melhores, TAM_POPULACAO / 2);
         int mae = torneio(melhores, TAM_POPULACAO / 2);
-        int filho = (pai + mae) / 2;
+        int min = (pai < mae) ? pai : mae;
+        int max = (pai > mae) ? pai : mae;
+        int filho = gerar_aleatorio(min, max); // Gera um filho com valor entre o mínimo e máximo dos pais
 
         mutacao_adaptativa(&filho, geracao);
         nova_pop[i] = filho;
     }
+    // Substitui o último filho por um novo valor aleatório - Diversidade Genética
+    nova_pop[TAM_POPULACAO - 1] = gerar_aleatorio(MIN_VALOR, MAX_VALOR);
 }
 
 int main()
 {
-    srand(time(NULL));
+    srand(time(NULL)); // Inicializa o randomizador com uma semente diferente a cada execução
 
     int populacao[TAM_POPULACAO];
     int nova_populacao[TAM_POPULACAO];
